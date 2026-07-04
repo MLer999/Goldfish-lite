@@ -77,7 +77,6 @@ export default function Ennichi({ onEnterUra }: { onEnterUra: () => void }) {
               <span className="scoop__ripple" />
               <span className="scoop__ripple scoop__ripple--2" />
               <span className="scoop__ripple scoop__ripple--3" />
-              <div className="poi poi--tearing scoop__poi" />
             </div>
             <p className="hint">ポイを、そっと差し入れる…</p>
           </div>
