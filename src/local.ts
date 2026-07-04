@@ -6,7 +6,7 @@ import { doorOpens } from "./door";
 
 const BASE = import.meta.env.BASE_URL; // 末尾に "/"（Vite が注入）
 const ART_COUNT = 20;
-const SPECIAL_COUNT = 4;
+const SPECIAL_COUNT = 6;
 const DOT_COUNT = 24;
 
 const pad = (n: number) => String(n).padStart(2, "0");
