@@ -16,6 +16,9 @@ const specialUrl = (i: number) => `${BASE}special/special-${pad(i)}.png`;
 /** 裏に並べる可逆ドット画像（事前生成）のURL一覧。 */
 export const dotUrls: string[] = Array.from({ length: DOT_COUNT }, (_, i) => `${BASE}dots/dot-${pad(i + 1)}.png`);
 
+/** 「すくう」演出の下絵（金魚すくいの水槽を真上から）。 */
+export const scoopImage = `${BASE}scoop/water.png`;
+
 export function drawQuestion(): Question {
   return QUESTION_BANK[Math.floor(Math.random() * QUESTION_BANK.length)];
 }

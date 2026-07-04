@@ -3,7 +3,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Tank from "./Tank";
-import { drawQuestion, scoop, type ScoopResult } from "./local";
+import { drawQuestion, scoop, scoopImage, type ScoopResult } from "./local";
 import type { Question } from "./questions";
 
 type Phase = "asking" | "scooping" | "revealed" | "caught";
@@ -72,7 +72,13 @@ export default function Ennichi({ onEnterUra }: { onEnterUra: () => void }) {
 
         {phase === "scooping" && (
           <div className="card">
-            <div className="poi poi--tearing" />
+            <div className="scoop__scene">
+              <img className="scoop__water" src={scoopImage} alt="" />
+              <span className="scoop__ripple" />
+              <span className="scoop__ripple scoop__ripple--2" />
+              <span className="scoop__ripple scoop__ripple--3" />
+              <div className="poi poi--tearing scoop__poi" />
+            </div>
             <p className="hint">ポイを、そっと差し入れる…</p>
           </div>
         )}
