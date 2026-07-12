@@ -44,6 +44,13 @@ vercel --prod     # 本番URLを発行
 **方法C：ドラッグ&ドロップ**
 `npm run build` して、生成された `dist/` フォルダを Vercel（または Netlify Drop）に投げる。
 
+## 完走証NFT（`badge/`）を触る場合
+コントラクトのコンパイルを伴うPythonスクリプト（`chain.py`など）を実行する前に、`badge/contracts/`内で依存関係（`@openzeppelin/contracts@5.0.2`）をインストールしておく必要がある。
+```bash
+cd feed-lite/badge/contracts
+npm install
+```
+
 ## 画像の差し替え
 - 表の絵：`public/art/art-01.png …`（枚数を増減したら `src/local.ts` の `ART_COUNT` を合わせる）
 - 大きな金魚：`public/special/special-01.png …`（`SPECIAL_COUNT`）

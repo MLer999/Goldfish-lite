@@ -1213,9 +1213,11 @@ Expected: `correct phrase -> 200 { ok: true, txHash: '0x...' }`。Optimismメイ
 
 `feed-lite/public/claim.html`の`__BADGE_CONTRACT__`をStep 2でデプロイしたメインネットのコントラクトアドレスに、`__OPTIMISM_RPC__`を`https://mainnet.optimism.io`に置き換える。
 
+注意: `claim.html`の`CONTRACT_ADDRESS`/`RPC_URL`と、Step 6でVercelに設定する`BADGE_CONTRACT`/`OPTIMISM_RPC`は互いを検証しない独立した値。両方を同時に同じコントラクト・同じネットワークへ更新すること。片方だけ更新すると、ページ上の残数表示やclaim先が実際にmintされるコントラクトと食い違い、参加者に古い/誤った状態を表示してしまう。
+
 - [ ] **Step 6: Vercelの環境変数を本番用に設定する**
 
-Vercelダッシュボード（またはVercel CLIの`vercel env add`）で、Productionの環境変数に以下を設定する:
+Vercelダッシュボード（またはVercel CLIの`vercel env add`）で、Productionの環境変数に以下を設定する（Step 5の`claim.html`と同じコントラクト・ネットワークを指すことを必ず確認する）:
 ```
 BADGE_CHAIN=mainnet
 OPTIMISM_RPC=https://mainnet.optimism.io
