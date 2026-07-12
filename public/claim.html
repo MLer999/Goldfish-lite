@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>常世の金魚すくい ── 完走証を受け取る</title>
+<style>
+  body {
+    background: #0b0708; color: #f3e6c8; font-family: "Yu Mincho", serif;
+    display: flex; flex-direction: column; align-items: center; padding: 40px 20px;
+    min-height: 100vh; margin: 0; box-sizing: border-box;
+  }
+  .card {
+    max-width: 480px; width: 100%; border: 1px solid #caa049; border-radius: 8px;
+    padding: 24px; background: #15100f;
+  }
+  h1 { font-size: 1.4rem; text-align: center; color: #e9c46a; line-height: 1.6; }
+  input {
+    width: 100%; padding: 10px; margin: 12px 0; background: #1e1815;
+    border: 1px solid #6b5734; color: #f3e6c8; border-radius: 4px; box-sizing: border-box;
+  }
+  button {
+    width: 100%; padding: 12px; background: #caa049; color: #15100f; border: none;
+    border-radius: 4px; font-weight: bold; cursor: pointer;
+  }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  #status { margin-top: 12px; font-size: 0.9rem; min-height: 1.4em; text-align: center; }
+  #remaining { text-align: center; color: #caa049; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>常世の金魚すくい<br>完走証を受け取る</h1>
+  <div id="remaining">残り -- / 200</div>
+  <button id="connect">ウォレットを接続する</button>
+  <div id="claimArea" style="display:none;">
+    <input id="phrase" placeholder="証明の合言葉" />
+    <button id="claim">Claim（無料）</button>
+  </div>
+  <div id="status"></div>
+</div>
+<script type="module">
+import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6.13.4/+esm";
+
+const CONTRACT_ADDRESS = "0xE388B9D4879d7364AF9958288E864A4ac2614c2e";
+const RPC_URL = "https://sepolia.optimism.io";
+const ABI = ["function remaining() view returns (uint256)"];
+
+const statusEl = document.getElementById("status");
+const remainingEl = document.getElementById("remaining");
+const connectBtn = document.getElementById("connect");
+const claimArea = document.getElementById("claimArea");
+const claimBtn = document.getElementById("claim");
+const phraseInput = document.getElementById("phrase");
+
+let address = null;
+
+const readProvider = new ethers.JsonRpcProvider(RPC_URL);
+const readContract = new ethers.Contract(CONTRACT_ADDRESS, ABI, readProvider);
+
+async function loadRemaining() {
+  try {
+    const remaining = await readContract.remaining();
+    remainingEl.textContent = `残り ${remaining} / 200`;
+  } catch (e) {
+    remainingEl.textContent = "残数の取得に失敗しました";
+  }
+}
+
+connectBtn.addEventListener("click", async () => {
+  if (!window.ethereum) {
+    statusEl.textContent = "MetaMaskが見つかりません。インストールしてください。";
+    return;
+  }
+  const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+  address = accounts[0];
+  connectBtn.textContent = `接続済み: ${address.slice(0, 6)}...${address.slice(-4)}`;
+  connectBtn.disabled = true;
+  claimArea.style.display = "block";
+});
+
+claimBtn.addEventListener("click", async () => {
+  const phrase = phraseInput.value.trim();
+  if (!address || !phrase) return;
+  claimBtn.disabled = true;
+  statusEl.textContent = "送信中…";
+  try {
+    const res = await fetch("/api/relay-claim", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ address, phrase }),
+    });
+    const json = await res.json();
+    if (res.ok) {
+      statusEl.textContent = `受け取りました！ tx: ${json.txHash}`;
+      claimArea.style.display = "none";
+    } else {
+      statusEl.textContent = `エラー: ${json.error}`;
+      claimBtn.disabled = false;
+    }
+  } catch (e) {
+    statusEl.textContent = `通信エラー: ${e.message}`;
+    claimBtn.disabled = false;
+  }
+  loadRemaining();
+});
+
+loadRemaining();
+</script>
+</body>
+</html>
