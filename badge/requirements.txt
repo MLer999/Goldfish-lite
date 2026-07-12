@@ -1,0 +1,6 @@
+web3>=7.0,<8
+py-solc-x
+eth-account
+python-dotenv
+httpx
+pytest
