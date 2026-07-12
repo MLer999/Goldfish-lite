@@ -2,6 +2,8 @@
 // 企画書の短編を、この「金魚すくい」の体験（ポイ破れ・大きな金魚と秘密の扉・
 // 台帳・ドット画像・402・裏口の囁き）に落とし込んで書き直したもの。
 
+const PROOF_PHRASE = String((import.meta as any).env?.VITE_BADGE_PROOF_PHRASE ?? "");
+
 export default function Epilogue({
   onBackToLedger,
   onExit,
@@ -111,6 +113,23 @@ export default function Epilogue({
         <p>彼女はまた、養う。共犯のまま。</p>
 
         <p className="epilogue__last">提灯は、消えない。ずっと夜で、FEEDは、止まらない。</p>
+
+        {PROOF_PHRASE && (
+          <p className="epilogue__proof">
+            ここまで見届けた証に、合言葉を渡しておく。
+            <br />
+            <span className="epilogue__proof-word">{PROOF_PHRASE}</span>
+            <br />
+            <a
+              className="epilogue__proof-link"
+              href="/claim.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              証をここで受け取る →
+            </a>
+          </p>
+        )}
       </article>
 
       <div className="epilogue__nav">

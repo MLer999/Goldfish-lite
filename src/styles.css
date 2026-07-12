@@ -567,6 +567,28 @@ body {
   letter-spacing: 0.12em;
   margin-top: 2.4rem !important;
 }
+.epilogue__proof {
+  text-align: center;
+  margin-top: 2rem;
+  padding: 1.2rem 1rem;
+  border: 1px solid rgba(233, 196, 106, 0.4);
+  border-radius: 6px;
+  background: rgba(233, 196, 106, 0.06);
+  line-height: 1.9;
+}
+.epilogue__proof-word {
+  display: inline-block;
+  margin-top: 0.4rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  color: #e9c46a;
+}
+.epilogue__proof-link {
+  display: inline-block;
+  margin-top: 0.8rem;
+  color: #ffd6a0;
+  text-decoration: underline;
+}
 .epilogue__nav {
   max-width: 660px;
   margin: 2.5rem auto 0;

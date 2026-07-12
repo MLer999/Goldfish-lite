@@ -23,6 +23,7 @@ npm run dev        # http://localhost:5174
 ```
 VITE_DOOR_ONE_IN=0          # 0=確率で開かない / 10 なら 1/10
 VITE_DOOR_SECRET_WORD=I am AI
+VITE_BADGE_PROOF_PHRASE=    # 完走証NFTの合言葉。claim.htmlで使うものと同じ値を入れる
 ```
 
 ## Vercel に公開する
