@@ -57,3 +57,89 @@ def _compiled() -> dict:
 
 def abi() -> list:
     return _compiled()["abi"]
+
+
+from eth_account import Account
+from web3 import Web3
+
+
+def _rpc() -> str:
+    net = network()
+    return os.environ.get(net["rpc_env"], net["default_rpc"])
+
+
+@lru_cache(maxsize=1)
+def w3() -> Web3:
+    conn = Web3(Web3.HTTPProvider(_rpc(), request_kwargs={"timeout": 60}))
+    cid = conn.eth.chain_id
+    expected = network()["chain_id"]
+    if cid != expected:
+        raise RuntimeError(f"chain_id={cid} は想定({expected})と不一致。中止。")
+    return conn
+
+
+@lru_cache(maxsize=1)
+def owner() -> "Account":
+    pk = os.environ.get("BADGE_OWNER_PRIVATE_KEY")
+    if not pk:
+        raise RuntimeError("BADGE_OWNER_PRIVATE_KEY が未設定")
+    return Account.from_key(pk)
+
+
+@lru_cache(maxsize=1)
+def relayer_account() -> "Account":
+    pk = os.environ.get("RELAYER_PRIVATE_KEY")
+    if not pk:
+        raise RuntimeError("RELAYER_PRIVATE_KEY が未設定")
+    return Account.from_key(pk)
+
+
+def _send(tx: dict, acct: "Account") -> dict:
+    conn = w3()
+    tx.setdefault("from", acct.address)
+    tx.setdefault("nonce", conn.eth.get_transaction_count(acct.address))
+    tx.setdefault("chainId", network()["chain_id"])
+    if "gas" not in tx:
+        tx["gas"] = int(conn.eth.estimate_gas(tx) * 1.2)
+    tx.setdefault("maxFeePerGas", conn.eth.gas_price * 2)
+    tx.setdefault("maxPriorityFeePerGas", conn.to_wei(0.001, "gwei"))
+    signed = acct.sign_transaction(tx)
+    tx_hash = conn.eth.send_raw_transaction(signed.raw_transaction)
+    return conn.eth.wait_for_transaction_receipt(tx_hash, timeout=180)
+
+
+def deploy(relayer_address: str, code_hash: bytes, uri: str) -> str:
+    """CompletionBadge をデプロイし、コントラクトアドレスを返す。"""
+    conn = w3()
+    c = _compiled()
+    acct = owner()
+    Contract = conn.eth.contract(abi=c["abi"], bytecode=c["bin"])
+    tx = Contract.constructor(
+        acct.address, Web3.to_checksum_address(relayer_address), code_hash, uri
+    ).build_transaction({"from": acct.address, "nonce": conn.eth.get_transaction_count(acct.address)})
+    receipt = _send(tx, acct)
+    return receipt["contractAddress"]
+
+
+def _contract():
+    conn = w3()
+    addr = os.environ.get("BADGE_CONTRACT")
+    if not addr:
+        raise RuntimeError("BADGE_CONTRACT が未設定（先に deploy が必要）")
+    return conn.eth.contract(address=Web3.to_checksum_address(addr), abi=abi())
+
+
+def remaining() -> int:
+    return _contract().functions.remaining().call()
+
+
+def claim_for(to: str, phrase: str) -> str:
+    """relayerとしてclaimForを送信し、tx_hashを返す。"""
+    conn = w3()
+    contract = _contract()
+    acct = relayer_account()
+    tx = contract.functions.claimFor(Web3.to_checksum_address(to), phrase).build_transaction(
+        {"from": acct.address, "nonce": conn.eth.get_transaction_count(acct.address)}
+    )
+    receipt = _send(tx, acct)
+    return receipt["transactionHash"].hex()
