@@ -5,6 +5,16 @@ const PROOF_PHRASE = String((import.meta as any).env?.VITE_BADGE_PROOF_PHRASE ??
 
 const IMG = "/epilogue/";
 
+const IS_MOBILE =
+  typeof navigator !== "undefined" && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+
+const CLAIM_URL = "/claim.html";
+const CLAIM_DEEPLINK = "https://metamask.app.link/dapp/goldfish-lite-one.vercel.app/claim.html";
+
+function copyProofPhrase() {
+  void navigator.clipboard?.writeText(PROOF_PHRASE);
+}
+
 export default function Epilogue({
   onBackToLedger,
   onExit,
@@ -270,14 +280,37 @@ owner...owner...owner...`}
             <br />
             <span className="epilogue__proof-word">{PROOF_PHRASE}</span>
             <br />
-            <a
-              className="epilogue__proof-link"
-              href="/claim.html"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              証をここで受け取る →
-            </a>
+            {IS_MOBILE ? (
+              <>
+                <span className="epilogue__proof-step">① 合言葉をコピーする</span>
+                <br />
+                <button
+                  type="button"
+                  className="epilogue__proof-link epilogue__proof-copy"
+                  onClick={copyProofPhrase}
+                >
+                  合言葉をコピー
+                </button>
+                <br />
+                <span className="epilogue__proof-step">② MetaMaskアプリで証を受け取る</span>
+                <br />
+                <a
+                  className="epilogue__proof-link"
+                  href={CLAIM_DEEPLINK}
+                >
+                  MetaMaskアプリで受け取る →
+                </a>
+              </>
+            ) : (
+              <a
+                className="epilogue__proof-link"
+                href={CLAIM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                証をここで受け取る →
+              </a>
+            )}
           </p>
         )}
       </article>

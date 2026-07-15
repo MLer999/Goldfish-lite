@@ -646,6 +646,21 @@ body {
   color: #ffd6a0;
   text-decoration: underline;
 }
+.epilogue__proof-step {
+  display: inline-block;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #d8cdb8;
+  letter-spacing: 0.05em;
+}
+.epilogue__proof-copy {
+  font-family: inherit;
+  font-size: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
 .epilogue__nav {
   max-width: 660px;
   margin: 2.5rem auto 0;
