@@ -148,6 +148,13 @@ body {
   letter-spacing: 0.06em;
   margin: 0 0 1.2rem;
 }
+.guide__note {
+  text-align: center;
+  margin: 0.8rem 0 0;
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  opacity: 0.7;
+}
 
 .omikuji {
   font-size: clamp(1.15rem, 4.5vw, 1.5rem);
@@ -538,6 +545,56 @@ body {
   letter-spacing: 0.3em;
   text-indent: 0.3em;
   color: #d8cdb8;
+}
+.epilogue__eyecatch {
+  display: block;
+  width: 100%;
+  border-radius: 8px;
+  margin: 0 0 2rem;
+}
+.epilogue__case {
+  text-align: center;
+  color: #ffd6a0;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  font-size: 0.85rem;
+  margin: 3rem 0 1.8rem !important;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 214, 160, 0.15);
+}
+.epilogue__img {
+  display: block;
+  width: 100%;
+  border-radius: 6px;
+  margin: 0 0 1.5rem;
+}
+.epilogue__img--small {
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.epilogue__log {
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.82rem;
+  line-height: 1.8;
+  color: #9fb2d4;
+  background: rgba(159, 178, 212, 0.06);
+  border-left: 2px solid rgba(159, 178, 212, 0.3);
+  padding: 1rem 1.2rem;
+  margin: 0 0 1.5rem;
+  overflow-x: auto;
+  white-space: pre;
+}
+.epilogue__rule {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  margin: 3rem 0 2rem;
+}
+.epilogue__credit {
+  text-align: center;
+  color: #d8cdb8;
+  letter-spacing: 0.1em;
+  font-size: 0.9rem;
 }
 .epilogue__q { color: #ffd6a0; }
 .epilogue__ledger { color: #9fb2d4; letter-spacing: 0.1em; }
