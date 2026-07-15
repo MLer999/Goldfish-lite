@@ -97,6 +97,10 @@ claimBtn.addEventListener("click", async () => {
       statusEl.textContent = `受け取りました！ tx: ${json.txHash}`;
       claimArea.style.display = "none";
       addToWalletBtn.style.display = "block";
+    } else if (String(json.error || "").includes("already claimed")) {
+      statusEl.textContent = "すでに受け取り済みです。下のボタンでMetaMaskに追加できます。";
+      claimArea.style.display = "none";
+      addToWalletBtn.style.display = "block";
     } else {
       statusEl.textContent = `エラー: ${json.error}`;
       claimBtn.disabled = false;
