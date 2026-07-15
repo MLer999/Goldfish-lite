@@ -4,6 +4,7 @@
 import { useEffect, useRef, useState } from "react";
 import Tank from "./Tank";
 import { drawQuestion, scoop, scoopImage, type ScoopResult } from "./local";
+import { playScoopSound, playDoorOpenSound } from "./sound";
 import type { Question } from "./questions";
 
 type Phase = "asking" | "scooping" | "revealed" | "caught";
@@ -30,6 +31,7 @@ export default function Ennichi({ onEnterUra }: { onEnterUra: () => void }) {
   async function doScoop() {
     if (!answer.trim()) return;
     const myRound = roundRef.current;
+    playScoopSound();
     setPhase("scooping");
     const result: ScoopResult = await scoop(answer.trim());
     if (roundRef.current !== myRound) return;
@@ -67,6 +69,10 @@ export default function Ennichi({ onEnterUra }: { onEnterUra: () => void }) {
             <button className="poi-btn" disabled={!answer.trim()} onClick={() => void doScoop()}>
               すくう
             </button>
+            <p className="guide__note">
+              今日投げた言葉はDemise（消滅）するので、<br />
+              気兼ねなくポイっとしてね。
+            </p>
           </div>
         )}
 
@@ -100,7 +106,13 @@ export default function Ennichi({ onEnterUra }: { onEnterUra: () => void }) {
               ここは、あなたのための入口ではない。
             </p>
             <p className="whisper whisper--dim">入れば、もう戻れないかもしれない。</p>
-            <button className="poi-btn door__enter" onClick={onEnterUra}>
+            <button
+              className="poi-btn door__enter"
+              onClick={() => {
+                playDoorOpenSound();
+                onEnterUra();
+              }}
+            >
               それでも、入る
             </button>
             <button className="reveal__leave" onClick={newRound}>
