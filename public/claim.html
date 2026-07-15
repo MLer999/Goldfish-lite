@@ -38,6 +38,7 @@
     <button id="claim">Claim（無料）</button>
   </div>
   <div id="status"></div>
+  <button id="addToWallet" style="display:none; margin-top:12px;">MetaMaskにNFTを追加</button>
 </div>
 <script type="module">
 import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6.13.4/+esm";
@@ -52,6 +53,7 @@ const connectBtn = document.getElementById("connect");
 const claimArea = document.getElementById("claimArea");
 const claimBtn = document.getElementById("claim");
 const phraseInput = document.getElementById("phrase");
+const addToWalletBtn = document.getElementById("addToWallet");
 
 let address = null;
 
@@ -94,6 +96,7 @@ claimBtn.addEventListener("click", async () => {
     if (res.ok) {
       statusEl.textContent = `受け取りました！ tx: ${json.txHash}`;
       claimArea.style.display = "none";
+      addToWalletBtn.style.display = "block";
     } else {
       statusEl.textContent = `エラー: ${json.error}`;
       claimBtn.disabled = false;
@@ -103,6 +106,23 @@ claimBtn.addEventListener("click", async () => {
     claimBtn.disabled = false;
   }
   loadRemaining();
+});
+
+addToWalletBtn.addEventListener("click", async () => {
+  try {
+    await window.ethereum.request({
+      method: "wallet_watchAsset",
+      params: {
+        type: "ERC1155",
+        options: {
+          address: CONTRACT_ADDRESS,
+          tokenId: "1",
+        },
+      },
+    });
+  } catch (e) {
+    statusEl.textContent = `追加できませんでした: ${e.message}`;
+  }
 });
 
 loadRemaining();
