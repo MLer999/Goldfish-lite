@@ -112,8 +112,35 @@ claimBtn.addEventListener("click", async () => {
   loadRemaining();
 });
 
+const OPTIMISM_CHAIN_ID_HEX = "0xa"; // 10
+
+async function ensureOptimismNetwork() {
+  try {
+    await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: OPTIMISM_CHAIN_ID_HEX }],
+    });
+  } catch (switchError) {
+    if (switchError && switchError.code === 4902) {
+      await window.ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [{
+          chainId: OPTIMISM_CHAIN_ID_HEX,
+          chainName: "OP Mainnet",
+          nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+          rpcUrls: ["https://mainnet.optimism.io"],
+          blockExplorerUrls: ["https://optimistic.etherscan.io"],
+        }],
+      });
+    } else {
+      throw switchError;
+    }
+  }
+}
+
 addToWalletBtn.addEventListener("click", async () => {
   try {
+    await ensureOptimismNetwork();
     await window.ethereum.request({
       method: "wallet_watchAsset",
       params: {
