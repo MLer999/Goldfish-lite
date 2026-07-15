@@ -39,6 +39,10 @@
   </div>
   <div id="status"></div>
   <button id="addToWallet" style="display:none; margin-top:12px;">MetaMaskにNFTを追加</button>
+  <a id="openseaLink" href="#" target="_blank" rel="noopener noreferrer"
+     style="display:none; margin-top:12px; text-align:center; color:#ffd6a0;">
+    OpenSeaで見る →
+  </a>
 </div>
 <script type="module">
 import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6.13.4/+esm";
@@ -54,6 +58,14 @@ const claimArea = document.getElementById("claimArea");
 const claimBtn = document.getElementById("claim");
 const phraseInput = document.getElementById("phrase");
 const addToWalletBtn = document.getElementById("addToWallet");
+const openseaLink = document.getElementById("openseaLink");
+const OPENSEA_URL = `https://opensea.io/assets/optimism/${CONTRACT_ADDRESS}/1`;
+openseaLink.href = OPENSEA_URL;
+
+function showPostClaimLinks() {
+  addToWalletBtn.style.display = "block";
+  openseaLink.style.display = "block";
+}
 
 let address = null;
 
@@ -96,11 +108,11 @@ claimBtn.addEventListener("click", async () => {
     if (res.ok) {
       statusEl.textContent = `受け取りました！ tx: ${json.txHash}`;
       claimArea.style.display = "none";
-      addToWalletBtn.style.display = "block";
+      showPostClaimLinks();
     } else if (String(json.error || "").includes("already claimed")) {
-      statusEl.textContent = "すでに受け取り済みです。下のボタンでMetaMaskに追加できます。";
+      statusEl.textContent = "すでに受け取り済みです。下のリンクから確認できます。";
       claimArea.style.display = "none";
-      addToWalletBtn.style.display = "block";
+      showPostClaimLinks();
     } else {
       statusEl.textContent = `エラー: ${json.error}`;
       claimBtn.disabled = false;
