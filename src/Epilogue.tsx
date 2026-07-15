@@ -75,9 +75,10 @@ export default function Epilogue({
         <p>
           ポイは、破れた。——いつものように。手のなかに残ったのは、魚ではなく、絵だった。
         </p>
-        <p className="epilogue__beat">まただ。まだ、投げる。</p>
-        <img className="epilogue__img epilogue__img--small" src={`${IMG}05b-extra1.png`} alt="" />
+      
+
         <img className="epilogue__img" src={`${IMG}04-chochin.png`} alt="" />
+          <p className="epilogue__beat">まただ。まだ、投げる。</p>
         <img className="epilogue__img" src={`${IMG}05-ai-chochin.png`} alt="" />
         <p>
           深い藍と提灯、金魚が画面いっぱいに広がる。有機的で、少し不穏で、美しい。<br />

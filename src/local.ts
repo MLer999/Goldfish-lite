@@ -14,6 +14,7 @@ const ART_FILES = [
   "art-06.png", "art-07.png", "art-08.png", "art-09.png", "art-10.png",
   "art-11.png", "art-12.png", "art-13.png", "art-14.png", "art-15.png",
   "art-16.png", "art-17.png", "art-18.png", "art-19.png", "art-20.png",
+  "goldfish_main_011.png",
   "goldfish_main_044.png", "goldfish_main_046.png", "goldfish_main_047.png",
   "goldfish_main_055.png", "goldfish_main_057.png",
   "hiru_012.png", "hiru_014.png", "hiru_019.png",
@@ -21,6 +22,7 @@ const ART_FILES = [
   "modern_006.png", "modern_007.png", "modern_008.png", "modern_009.png",
   "modern_010.png", "modern_011.png", "modern_012.png", "modern_013.png",
   "modern_017.png", "modern_018.png", "modern_019.png",
+  "special-04.png", "special-06.png",
   "waso_001.png", "waso_002.png", "waso_003.png", "waso_004.png",
   "waso_005.png", "waso_006.png", "waso_007.png", "waso_008.png",
   "waso_009.png", "waso_016.png", "waso_017.png",
@@ -31,15 +33,10 @@ const ART_FILES = [
 
 // public/special/ 配下の実ファイル名一覧（大きな金魚＝レア演出）。
 const SPECIAL_FILES = [
-  "goldfish_main_001.png", "goldfish_main_002.png", "goldfish_main_003.png",
-  "goldfish_main_004.png", "goldfish_main_005.png", "goldfish_main_007.png",
-  "goldfish_main_009.png", "goldfish_main_011.png", "goldfish_main_012.png",
-  "goldfish_main_013.png", "goldfish_main_014.png", "goldfish_main_015.png",
-  "goldfish_main_020.png", "goldfish_main_025.png", "goldfish_main_028.png",
-  "goldfish_main_033.png", "goldfish_main_034.png", "goldfish_main_037.png",
-  "goldfish_main_048.png", "goldfish_main_050.png",
-  "special-01.png", "special-02.png", "special-03.png",
-  "special-04.png", "special-05.png", "special-06.png",
+  "goldfish_main_009.png", "goldfish_main_012.png", "goldfish_main_014.png",
+  "goldfish_main_015.png", "goldfish_main_025.png", "goldfish_main_028.png",
+  "goldfish_main_034.png", "goldfish_main_050.png",
+  "special-01.png", "special-02.png", "special-05.png",
 ];
 
 const pad = (n: number) => String(n).padStart(2, "0");
