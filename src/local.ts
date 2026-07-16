@@ -5,7 +5,6 @@ import { QUESTION_BANK, type Question } from "./questions";
 import { doorOpens } from "./door";
 
 const BASE = import.meta.env.BASE_URL; // 末尾に "/"（Vite が注入）
-const DOT_COUNT = 25;
 
 // public/art/ 配下の実ファイル名一覧（連番以外の名前の画像も含む）。
 const ART_FILES = [
@@ -39,12 +38,8 @@ const SPECIAL_FILES = [
   "special-01.png", "special-02.png", "special-05.png",
 ];
 
-const pad = (n: number) => String(n).padStart(2, "0");
 const artUrl = (name: string) => `${BASE}art/${name}`;
 const specialUrl = (name: string) => `${BASE}special/${name}`;
-
-/** 裏に並べる可逆ドット画像（事前生成）のURL一覧。 */
-export const dotUrls: string[] = Array.from({ length: DOT_COUNT }, (_, i) => `${BASE}dots/dot-${pad(i + 1)}.png`);
 
 /** 「すくう」演出の下絵（金魚すくいの水槽を真上から）。 */
 export const scoopImage = `${BASE}scoop/water.png`;

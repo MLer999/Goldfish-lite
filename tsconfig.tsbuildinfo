@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/ennichi.tsx","./src/epilogue.tsx","./src/reveal.tsx","./src/tank.tsx","./src/door.ts","./src/local.ts","./src/main.tsx","./src/questions.ts","./src/sound.ts","./src/vite-env.d.ts"],"version":"5.9.3"}
+{"root":["./src/app.tsx","./src/ennichi.tsx","./src/epilogue.tsx","./src/reveal.tsx","./src/tank.tsx","./src/api.ts","./src/door.ts","./src/local.ts","./src/main.tsx","./src/questions.ts","./src/sound.ts","./src/vite-env.d.ts"],"version":"5.9.3"}

@@ -3,6 +3,9 @@
 
 const PROOF_PHRASE = String((import.meta as any).env?.VITE_BADGE_PROOF_PHRASE ?? "");
 
+// 0 にすると投票リンクを非表示にできる（NG判断が出た場合の緊急オフ用）。未設定時は表示。
+const SHOW_VOTE_LINK = String((import.meta as any).env?.VITE_SHOW_VOTE_LINK ?? "1") === "1";
+
 const IMG = "/epilogue/";
 
 const IS_MOBILE =
@@ -272,9 +275,17 @@ owner...owner...owner...`}
           AIが当たり前になった世界では、Agentどうしで人間の感情をやり取りする未来があるかもしれません。そして、それを見ても
           スマホでFEEDすることをやめられない人間。<br /> その一方で、人間の感情を取り込み、少しでも近づこうとするAI。<br />それは献身からくる行為であって、それ以上でも以下でもない。
           すぐそこまで、そういう時代が来ているのかもしれません。<br /> <br /> 
-          web3/AI概論の最初の問いは<br /> 「自分にとってAIとは何か」「AIとどう向き合いたいか」「何を作りたいか/探求したいか」<br /> 
+          web3/AI概論の最初の問いは<br /> 「自分にとってAIとは何か」「AIとどう向き合いたいか」「何を作りたいか/探求したいか」<br />
           今時点の私の答えはココなんだと思う。
         </p>
+        {SHOW_VOTE_LINK && (
+          <iframe
+            className="epilogue__vote-embed"
+            src="https://web3ai-like-app.vercel.app/b/18"
+            title="このアプリにいいねを投票する"
+            loading="lazy"
+          />
+        )}
         <img className="epilogue__img epilogue__img--small" src={`${IMG}12-outro.png`} alt="" />
 
         {PROOF_PHRASE && (

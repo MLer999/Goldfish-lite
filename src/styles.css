@@ -478,7 +478,8 @@ body {
 }
 .ticker__token { color: #9fb2d4; }
 .ticker__flow { color: var(--ink-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ticker__price { color: #6ee7a0; }
+.ticker__tx { color: #6ee7a0; text-decoration: none; }
+.ticker__tx:hover { color: #9df5bd; }
 @keyframes tickerIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; } }
 
 .reveal__foot { text-align: center; margin: 0 auto 1.6rem; }
@@ -657,6 +658,16 @@ body {
   margin-top: 0.8rem;
   color: #ffd6a0;
   text-decoration: underline;
+}
+.epilogue__vote-embed {
+  display: block;
+  width: 70%;
+  height: 700px;
+  margin: 0.9rem auto 1.5rem;
+  border: none;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(159, 178, 212, 0.18);
 }
 .epilogue__proof-step {
   display: inline-block;
