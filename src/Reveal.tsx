@@ -1,18 +1,30 @@
-// 裏：市場（Reveal）。feed 本体と同じ実データ（可逆ドット画像・Base Sepolia の取引ログ）を表示する。
+// 裏：市場（Reveal）。上のドット画像は feed 本体と同じ実データ、下の取引ログはダミーの流れる演出。
 // 買い戻しは 402（クライアント側メッセージ）。
 
-import { useEffect, useState } from "react";
-import { revealRecords, revealImageSrc, onchainLog, type RevealRecord, type OnchainLogEntry } from "./api";
+import { useEffect, useRef, useState } from "react";
+import { revealRecords, revealImageSrc, type RevealRecord } from "./api";
 
-function shortAddr(addr: string) {
-  return `${addr.slice(0, 6)}…${addr.slice(-4)}`;
+const MINT = "0xMINT";
+function randAddr() {
+  const hex = "0123456789abcdef";
+  let s = "0x";
+  for (let i = 0; i < 4; i++) s += hex[Math.floor(Math.random() * 16)];
+  return s + "…" + hex[Math.floor(Math.random() * 16)] + hex[Math.floor(Math.random() * 16)];
+}
+
+interface Trade {
+  id: number;
+  token: number;
+  from: string;
+  to: string;
+  price: string;
 }
 
 export default function Reveal({ onLeave }: { onLeave?: () => void }) {
   const [records, setRecords] = useState<RevealRecord[]>([]);
-  const [log, setLog] = useState<OnchainLogEntry[]>([]);
-  const [contract, setContract] = useState("");
+  const [trades, setTrades] = useState<Trade[]>([]);
   const [buyMsg, setBuyMsg] = useState<string | null>(null);
+  const seq = useRef(0);
 
   // feed 本体・裏の記録一覧（可逆ドット画像）。feed-lite 側では生成しない、本物のデータ。
   useEffect(() => {
@@ -21,14 +33,20 @@ export default function Reveal({ onLeave }: { onLeave?: () => void }) {
       .catch(() => setRecords([]));
   }, []);
 
-  // 実際に Base Sepolia へ mint された本物の取引ログ（1回だけ取得。流す演出はしない）。
+  // 下の取引ログは演出用のダミー（流れるアニメーション）。
   useEffect(() => {
-    onchainLog(20)
-      .then((r) => {
-        setLog(r.entries);
-        setContract(r.contract);
-      })
-      .catch(() => setLog([]));
+    const timer = setInterval(() => {
+      seq.current += 1;
+      const t: Trade = {
+        id: seq.current,
+        token: 80000 + Math.floor(Math.random() * 20000),
+        from: Math.random() < 0.5 ? MINT : randAddr(),
+        to: randAddr(),
+        price: (0.008 + Math.random() * 0.06).toFixed(4),
+      };
+      setTrades((prev) => [t, ...prev].slice(0, 14));
+    }, 900);
+    return () => clearInterval(timer);
   }, []);
 
   function buyback() {
@@ -100,36 +118,18 @@ export default function Reveal({ onLeave }: { onLeave?: () => void }) {
       </p>
 
       <section className="ticker" aria-label="trades">
-        <div className="ticker__label">取引ログ（本物のmint記録）</div>
+        <div className="ticker__label">取引ログ</div>
         <ul className="ticker__list">
-          {log.map((entry) => (
-            <li className="ticker__row" key={entry.tx_hash}>
-              <span className="ticker__token">token #{entry.token_id}</span>
+          {trades.map((t) => (
+            <li className="ticker__row" key={t.id}>
+              <span className="ticker__token">token #{t.token}</span>
               <span className="ticker__flow">
-                0x0000…0000 → {shortAddr(entry.to)}
+                {t.from} → {t.to}
               </span>
-              <a
-                className="ticker__tx"
-                href={`https://sepolia.basescan.org/tx/${entry.tx_hash}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {shortAddr(entry.tx_hash)} ↗
-              </a>
+              <span className="ticker__price">{t.price} USDC</span>
             </li>
           ))}
-          {log.length === 0 && <li className="ticker__row">まだmint記録がない。</li>}
         </ul>
-        {contract && (
-          <a
-            className="reveal__market-link"
-            href={`https://sepolia.basescan.org/token/${contract}#transactions`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            BaseScanで全件見る →
-          </a>
-        )}
       </section>
     </div>
   );
