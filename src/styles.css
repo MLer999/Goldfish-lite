@@ -492,6 +492,18 @@ body {
   border-radius: 999px;
   cursor: pointer;
 }
+.reveal__market-link {
+  display: block;
+  margin-top: 0.7rem;
+  color: #9fb2d4;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(159, 178, 212, 0.4);
+  padding-bottom: 2px;
+  width: fit-content;
+}
+.reveal__market-link:hover { color: #cdd8ee; }
 .reveal__402 { color: #ff8f5e; font-size: 0.85rem; margin-top: 0.9rem; letter-spacing: 0.05em; }
 .reveal__epilogue {
   display: inline-block;

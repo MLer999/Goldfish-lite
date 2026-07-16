@@ -65,6 +65,14 @@ export default function Reveal({ onLeave }: { onLeave?: () => void }) {
         <button className="reveal__buy" onClick={buyback}>
           自分の感情を買い戻す
         </button>
+        <a
+          className="reveal__market-link"
+          href="https://sepolia.basescan.org/token/0x2972D8CF3f17c3B7B09EBb421f43DfC3964a54b9"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          AI Agent用NFT市場に入る →
+        </a>
         {buyMsg && <p className="reveal__402">{buyMsg}</p>}
         {onLeave && (
           <button className="reveal__leave" onClick={onLeave}>
